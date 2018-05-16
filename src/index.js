@@ -1,16 +1,33 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
+import YTSearch from 'youtube-api-search';
 import SearchBar from './components/search_bar';
+import VideoList from './components/video_list';
+const API_KEY = 'AIzaSyC5d-psbbbJkGKVtSyzpmRiS6RvQvgmvFo';
 
-const API_KEY = '470324462257-lg9f07s6gcmg6h3em7agmg5na7ns97q0.apps.googleusercontent.com';
+class App extends Component {
+    constructor (props) {
+        super(props);
 
-const App = () => {
-    return (
-        <div>
-            <SearchBar />
-        </div>
-    );
+        this.state = { videos: [] };
+
+        YTSearch({
+            key: API_KEY,
+            term: 'ola englund'
+        }, (videos) => {
+            this.setState({ videos })
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <SearchBar />
+                <VideoList videos={this.state.videos} />
+            </div>
+        );
+    }
 }
+
 
 ReactDOM.render(<App />, document.querySelector('.container'));
